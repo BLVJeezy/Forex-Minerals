@@ -60,6 +60,15 @@ export const company = {
 
   /** Production domain — update before deployment. */
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.forexminerals.cd",
+
+  /**
+   * True once the real production domain has been supplied via
+   * NEXT_PUBLIC_SITE_URL. Staging and preview deployments leave it unset, and
+   * are kept out of search results — the site still carries placeholder
+   * contact details, and an indexed preview URL would misrepresent the
+   * company. Setting the domain switches indexing on.
+   */
+  isProductionDomain: Boolean(process.env.NEXT_PUBLIC_SITE_URL),
 } as const;
 
 /* ------------------------------------------------------------------ */

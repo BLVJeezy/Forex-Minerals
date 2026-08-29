@@ -96,9 +96,11 @@ export async function generateMetadata({
       ],
       apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
     },
+    // Mirrors robots.txt: preview deployments stay out of search results
+    // until the production domain is configured.
     robots: {
-      index: true,
-      follow: true,
+      index: company.isProductionDomain,
+      follow: company.isProductionDomain,
     },
   };
 }

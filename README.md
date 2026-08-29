@@ -27,7 +27,7 @@ NEXT_PUBLIC_SHOW_PLACEHOLDERS=1 npm run dev
 
 | Variable                        | Rôle                                                                    |
 | ------------------------------- | ----------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`          | Domaine de production (URL canoniques, hreflang, Open Graph, sitemap).   |
+| `NEXT_PUBLIC_SITE_URL`          | Domaine de production (URL canoniques, hreflang, Open Graph, sitemap). Tant qu'elle est absente, le site est exclu de l'indexation. |
 | `RFQ_RECIPIENT_EMAIL`           | Destinataire des demandes de devis. Tant qu'elle est absente, le formulaire répond « non configuré ». |
 | `NEXT_PUBLIC_SHOW_PLACEHOLDERS` | `1` pour surligner les contenus à confirmer.                             |
 

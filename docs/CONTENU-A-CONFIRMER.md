@@ -128,6 +128,12 @@ Valeur par défaut : `https://www.forexminerals.cd`. À remplacer par le domaine
 réel via la variable d'environnement `NEXT_PUBLIC_SITE_URL` (utilisée pour les
 URL canoniques, les balises hreflang, l'Open Graph et le sitemap).
 
+**Tant que `NEXT_PUBLIC_SITE_URL` n'est pas définie, le site est exclu de
+l'indexation** (`robots.txt` en `Disallow: /` et balises `noindex`). Les
+déploiements de préversion ne peuvent donc pas apparaître dans les résultats
+de recherche avec des coordonnées encore fictives. Définir la variable active
+l'indexation.
+
 ---
 
 ## 11. Photographies à fournir
