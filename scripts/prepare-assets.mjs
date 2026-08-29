@@ -126,21 +126,30 @@ async function reversed(input) {
   return sharp(out, { raw: { width: info.width, height: info.height, channels: 4 } });
 }
 
+/**
+ * Brand PNGs are written at roughly twice their largest rendered size and
+ * palette-quantised: the artwork is flat vector-style geometry, so this cuts
+ * the files by an order of magnitude with no visible loss.
+ */
+async function writeBrandPng(input, file, resize) {
+  await sharp(input)
+    .resize({ ...resize, fit: "inside", withoutEnlargement: true })
+    .png({ compressionLevel: 9, palette: true, quality: 92, effort: 10 })
+    .toFile(path.join(BRAND_OUT, file));
+}
+
 // Flattened intermediates (transparent background, full canvas)
 const lightBuf = await (await knockOutWhite(LOGO_SRC)).png().toBuffer();
 const darkBuf = await (await reversed(LOGO_SRC)).png().toBuffer();
 
-// Full lockup, light backgrounds
-await sharp(lightBuf)
-  .trim({ threshold: 1 })
-  .png({ compressionLevel: 9 })
-  .toFile(path.join(BRAND_OUT, "forex-minerals-logo.png"));
-
-// Full lockup, dark backgrounds
-await sharp(darkBuf)
-  .trim({ threshold: 1 })
-  .png({ compressionLevel: 9 })
-  .toFile(path.join(BRAND_OUT, "forex-minerals-logo-reversed.png"));
+// Full lockup, light and dark backgrounds (rendered up to ~92px tall)
+for (const [buf, name] of [
+  [lightBuf, "forex-minerals-logo.png"],
+  [darkBuf, "forex-minerals-logo-reversed.png"],
+]) {
+  const trimmed = await sharp(buf).trim({ threshold: 1 }).png().toBuffer();
+  await writeBrandPng(trimmed, name, { height: 320 });
+}
 
 // Square mark only (the crystal + F device above the wordmark)
 const meta = await sharp(LOGO_SRC).metadata();
@@ -156,10 +165,8 @@ for (const [buf, name] of [
   [darkBuf, "forex-minerals-mark-reversed.png"],
 ]) {
   const cropped = await sharp(buf).extract(markBox).png().toBuffer();
-  await sharp(cropped)
-    .trim({ threshold: 1 })
-    .png({ compressionLevel: 9 })
-    .toFile(path.join(BRAND_OUT, name));
+  const trimmed = await sharp(cropped).trim({ threshold: 1 }).png().toBuffer();
+  await writeBrandPng(trimmed, name, { width: 256, height: 256 });
 }
 
 /**
@@ -182,14 +189,19 @@ for (const [buf, name] of [
   [darkBuf, "forex-minerals-wordmark-reversed.png"],
 ]) {
   const cropped = await sharp(buf).extract(wordmarkBox).png().toBuffer();
-  await sharp(cropped)
-    .trim({ threshold: 1 })
-    .png({ compressionLevel: 9 })
-    .toFile(path.join(BRAND_OUT, name));
+  const trimmed = await sharp(cropped).trim({ threshold: 1 }).png().toBuffer();
+  await writeBrandPng(trimmed, name, { width: 700 });
 }
 
 // Favicons / touch icons — the mark centred on the brand navy.
-const markBuffer = await sharp(path.join(BRAND_OUT, "forex-minerals-mark-reversed.png"))
+const markMaster = await sharp(
+  await sharp(darkBuf).extract(markBox).png().toBuffer(),
+)
+  .trim({ threshold: 1 })
+  .png()
+  .toBuffer();
+
+const markBuffer = await sharp(markMaster)
   .resize(404, 404, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
   .toBuffer();
 
@@ -208,7 +220,7 @@ for (const [size, name] of [
 ]) {
   await sharp(iconMaster)
     .resize(size, size)
-    .png({ compressionLevel: 9 })
+    .png({ compressionLevel: 9, palette: true, quality: 92, effort: 10 })
     .toFile(path.join(PUBLIC_OUT, name));
 }
 
