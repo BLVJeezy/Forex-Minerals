@@ -107,6 +107,37 @@ préfixe de langue sont redirigées vers leur équivalent français.
 
 ---
 
+## Déploiement (Vercel)
+
+Le projet Vercel `forex-minerals` est lié au dépôt GitHub
+`BLVJeezy/Forex-Minerals`. Chaque push déclenche une construction :
+
+- un push sur la **branche de production** publie sur
+  `forex-minerals.vercel.app` ;
+- un push sur toute autre branche publie une préversion, accessible aussi via
+  l'alias stable `forex-minerals-git-<branche>-blvjeezys-projects.vercel.app`.
+
+> ⚠️ La branche de production du projet doit pointer vers la branche qui
+> contient le site. Si elle pointe vers une branche qui ne contient pas encore
+> l'application, `forex-minerals.vercel.app` renvoie une erreur 404
+> (`NOT_FOUND`) : Vercel construit bien la branche, mais celle-ci n'expose
+> aucune page.
+>
+> Le réglage se trouve dans **Vercel → Project → Settings → Git → Production
+> Branch**.
+
+### Variables à définir dans Vercel
+
+| Variable               | Quand                                                            |
+| ---------------------- | ---------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL` | Dès que le domaine définitif est connu. Sans elle, le site est déployé en `noindex` (voir ci-dessus). |
+| `RFQ_RECIPIENT_EMAIL`  | Dès que la destination des demandes de devis est confirmée.       |
+
+Aucune autre configuration n'est nécessaire : Vercel détecte Next.js et
+construit avec `npm run build`.
+
+---
+
 ## Identité visuelle
 
 Les couleurs sont échantillonnées directement dans le logo officiel :
