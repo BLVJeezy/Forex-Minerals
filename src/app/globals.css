@@ -1,0 +1,274 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/*  Forex Minerals — design tokens                                     */
+/*  Colours are sampled directly from the official logo artwork:       */
+/*  navy #002050, gold #A07828 → #D8B058, metallic grey #586070.       */
+/* ------------------------------------------------------------------ */
+
+@theme {
+  /* Navy — corporate backgrounds, navigation, premium sections */
+  --color-navy-950: #000d20;
+  --color-navy-900: #001330;
+  --color-navy-800: #001a40;
+  --color-navy-700: #002050;
+  --color-navy-600: #002a63;
+  --color-navy-500: #00357c;
+
+  /* Corporate blue — interactive elements */
+  --color-blue-600: #0b3f8c;
+  --color-blue-500: #1155a5;
+  --color-blue-400: #2b71c4;
+
+  /* Mineral gold — restrained premium accents */
+  --color-gold-700: #7d5a13;
+  --color-gold-600: #a07828;
+  --color-gold-500: #c29545;
+  --color-gold-400: #d8b058;
+  --color-gold-300: #e5c98a;
+
+  /* Industrial grey / steel */
+  --color-steel-950: #14181f;
+  --color-steel-900: #232932;
+  --color-steel-800: #333a45;
+  --color-steel-700: #454d59;
+  --color-steel-600: #586070;
+  --color-steel-500: #6f7787;
+  --color-steel-400: #9098a0;
+  --color-steel-300: #b4bac2;
+  --color-steel-200: #d5d9de;
+  --color-steel-100: #e8eaee;
+  --color-steel-50: #f4f5f7;
+
+  --color-mist: #f4f5f7;
+  --color-paper: #ffffff;
+
+  --font-display: var(--font-archivo), "Archivo", "Helvetica Neue", Arial,
+    sans-serif;
+  --font-sans: var(--font-inter), "Inter", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --ease-industrial: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-steel-800);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-navy-700);
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Visible, brand-coloured focus for keyboard users */
+  :focus-visible {
+    outline: 2px solid var(--color-gold-500);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  ::selection {
+    background: var(--color-navy-700);
+    color: #fff;
+  }
+}
+
+@layer components {
+  /* ---- Editorial type helpers ---------------------------------- */
+
+  .fx-eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-gold-700);
+  }
+
+  .fx-eyebrow-light {
+    color: var(--color-gold-400);
+  }
+
+  .fx-display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.04;
+  }
+
+  .fx-lead {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-steel-700);
+  }
+
+  @media (min-width: 1024px) {
+    .fx-lead {
+      font-size: 1.125rem;
+    }
+  }
+
+  /* ---- Section rhythm ------------------------------------------ */
+
+  .fx-section {
+    padding-block: 4.5rem;
+  }
+
+  .fx-section-pb {
+    padding-bottom: 4.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .fx-section {
+      padding-block: 5.5rem;
+    }
+    .fx-section-pb {
+      padding-bottom: 5.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .fx-section {
+      padding-block: 8rem;
+    }
+    .fx-section-pb {
+      padding-bottom: 8rem;
+    }
+  }
+
+  /* ---- Structural details -------------------------------------- */
+
+  .fx-rule-gold {
+    display: block;
+    width: 3rem;
+    height: 2px;
+    background: var(--color-gold-500);
+  }
+
+  /* Fine mineral texture used behind deep navy sections */
+  .fx-navy-texture {
+    background-color: var(--color-navy-800);
+    background-image:
+      radial-gradient(
+        900px 420px at 12% -10%,
+        rgba(17, 85, 165, 0.35),
+        transparent 70%
+      ),
+      radial-gradient(
+        700px 380px at 92% 110%,
+        rgba(194, 149, 69, 0.14),
+        transparent 70%
+      );
+  }
+
+  /* Hairline grid used on light editorial sections */
+  .fx-hairline-top {
+    border-top: 1px solid var(--color-steel-200);
+  }
+
+  /* ---- Link with animated gold underline ----------------------- */
+
+  .fx-underline {
+    background-image: linear-gradient(
+      var(--color-gold-500),
+      var(--color-gold-500)
+    );
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 1px;
+    transition: background-size 0.4s var(--ease-industrial);
+  }
+
+  .fx-underline:hover,
+  .fx-underline:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* ---- Scroll reveal ------------------------------------------- */
+
+  .fx-reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.75s var(--ease-industrial),
+      transform 0.75s var(--ease-industrial);
+    transition-delay: var(--fx-reveal-delay, 0ms);
+  }
+
+  .fx-reveal[data-visible="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fx-reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* ---- Image hover ---------------------------------------------- */
+
+  .fx-zoom img {
+    transition: transform 0.9s var(--ease-industrial);
+  }
+
+  .fx-zoom:hover img,
+  .fx-zoom:focus-within img {
+    transform: scale(1.02);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fx-zoom img {
+      transition: none;
+    }
+    .fx-zoom:hover img {
+      transform: none;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Content awaiting client confirmation.                              */
+/*  Set NEXT_PUBLIC_SHOW_PLACEHOLDERS=1 to highlight every value that   */
+/*  still needs to be supplied by Forex Minerals.                      */
+/* ------------------------------------------------------------------ */
+[data-placeholder="true"] {
+  position: relative;
+}
+
+html[data-show-placeholders="true"] [data-placeholder="true"] {
+  outline: 1px dashed var(--color-gold-500);
+  outline-offset: 2px;
+}
